@@ -9,7 +9,7 @@ async def update_user_points(db, cursor, user_id: int, points: int):
     except(ValueError):
          return (ValueError)
 
-async def check_user_points(db, cursor, user_id: int):
+async def check_user_points(cursor, user_id: int):
     try:
         query = f"SELECT points FROM curr_points WHERE user_id = {user_id}"
         cursor.execute(query)
@@ -33,6 +33,23 @@ async def add_new_user(db, cursor, user_id: int):
         db.commit()
 
         print(cursor.rowcount, "user inserted.")
+
+    except(ValueError):
+        return ValueError
+
+
+async def top_10_users(db, cursor, order = "DESC"):
+    try:
+        query = f"SELECT * FROM curr_points ORDER BY points {order}"
+        cursor.execute(query)
+
+        result = cursor.fetchall()
+
+        if result is not None:
+            return result 
+
+        else:
+            return [0]       
 
     except(ValueError):
         return ValueError
