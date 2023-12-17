@@ -70,14 +70,14 @@ if __name__ == "__main__":
             await ctx.respond("You don't have permissions to give or take points from users.")
 
 
-    @bot.slash_command(name = "best-worst-users", description = "Display top 10 users with the highest, or the lowest amount of points.")
+    @bot.slash_command(name = "social-points-leaderboard", description = "Display top 10 users with the highest, or the lowest amount of points.")
     async def best_worst_users(ctx, order: discord.Option(str, "Give the order either ASC or DESC", required=False, default="DESC")):
         top = await db_utils.top_10_users(conn, cursor, order)
 
         embed = discord.Embed(
         title="Top 10 users ",
-        description=f"Top 10 in {order}ending order",
-        color=discord.Colour.brand_green(), # Pycord provides a class with default colors you can choose from
+        description=f"Top 10 in {order.lower()}ending order",
+        color=discord.Colour.brand_green(),
     )
 
         for i, row in enumerate(top):
